@@ -1,12 +1,14 @@
-import React from 'react';
-import Categories from '../../components/Shared/Categories/Categories';
+import React from "react";
+import Categories from "../../components/Shared/Categories/Categories";
+import Rooms from "../../components/Rooms/Rooms";
 
 const Home = () => {
-    return (
-        <>
-            <Categories/>
-        </>
-    );
+  return (
+    <>
+      <Categories />
+      <Rooms />
+    </>
+  );
 };
 
 export default Home;
