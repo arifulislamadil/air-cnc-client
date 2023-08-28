@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useContext, useRef } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { TbFidgetSpinner } from "react-icons/tb";
+import { saveUser } from "../../api/auth";
 
 const SignUp = () => {
   const {
@@ -21,19 +22,7 @@ const SignUp = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  // handle google sign in
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then((result) => {
-        console.log(result.user);
-        navigate(from, { replace: true });
-      })
-      .catch((err) => {
-        console.log(err.message);
-        toast.error(err.message);
-        setLoading(false);
-      });
-  };
+  
 
   //  handle submit
 
@@ -65,6 +54,8 @@ const SignUp = () => {
             updateUserProfile(name, imageUrl)
               .then((result) => {
                 toast.success("Signup Success")
+                // save user to db
+                saveUser(result.user)
                 navigate(from, { replace: true });
               })
               .catch((err) => {
@@ -80,6 +71,22 @@ const SignUp = () => {
           });
       });
     return;
+  };
+
+  // handle google sign in
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => {
+        console.log(result.user);
+        // save user to db
+        saveUser(result.user)
+        navigate(from, { replace: true });
+      })
+      .catch((err) => {
+        console.log(err.message);
+        toast.error(err.message);
+        setLoading(false);
+      });
   };
 
   return (
