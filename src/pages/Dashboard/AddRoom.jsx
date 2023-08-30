@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import AddRoomForm from "../../components/Forms/AddRoomForm";
 import { imageUpload } from "../../api/utils";
 import { AuthContext } from "../../providers/AuthProvider";
+import { addRoom } from "../../api/rooms";
 
 const AddRoom = () => {
   const { user } = useContext(AuthContext);
@@ -18,12 +19,13 @@ const AddRoom = () => {
     setLoading(true);
     const location = event.target.location.value;
     const title = event.target.title.value;
-    const from = dates.startDate
-    const to = dates.endDate
+    const from = dates.startDate;
+    const to = dates.endDate;
     const price = event.target.price.value;
-    const total_guest = event.target.total_guest.value;
+    const guests = event.target.guests.value;
     const bedrooms = event.target.bedrooms.value;
     const bathrooms = event.target.bathrooms.value;
+    const description = event.target.description.value;
     const category = event.target.category.value;
     const image = event.target.image.files[0];
 
@@ -36,19 +38,23 @@ const AddRoom = () => {
           from,
           to,
           price: parseFloat(price),
-          total_guest,
+          guests,
           bedrooms,
           bathrooms,
           description,
           image: data.data.display_url,
           host: {
             name: user?.displayName,
-            image: data.data.photoURL,
+            image: user?.photoURL,
             email: user?.email,
           },
           category,
         };
 
+        // post room data to server
+        addRoom(roomData)
+          .then((data) => console.log(data))
+          .catch((err) => console.log(err));
         console.log(roomData);
         setLoading(false);
       })
