@@ -148,6 +148,7 @@ const SignUp = () => {
                   Password
                 </label>
               </div>
+              
               <input
                 type="password"
                 name="password"
