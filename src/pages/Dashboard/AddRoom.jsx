@@ -3,6 +3,8 @@ import AddRoomForm from "../../components/Forms/AddRoomForm";
 import { imageUpload } from "../../api/utils";
 import { AuthContext } from "../../providers/AuthProvider";
 import { addRoom } from "../../api/rooms";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AddRoom = () => {
   const { user } = useContext(AuthContext);
@@ -11,6 +13,7 @@ const AddRoom = () => {
     endDate: new Date(),
     key: "selection",
   });
+  const navigate=useNavigate()
   const [loading, setLoading] = useState(false);
   const [uploadButtonText, setUpLoadButtonText] = useState("Upload Image");
   // Handle form submit
@@ -22,12 +25,13 @@ const AddRoom = () => {
     const from = dates.startDate;
     const to = dates.endDate;
     const price = event.target.price.value;
-    const guests = event.target.guests.value;
+    const guest = event.target.guest.value;
     const bedrooms = event.target.bedrooms.value;
     const bathrooms = event.target.bathrooms.value;
     const description = event.target.description.value;
     const category = event.target.category.value;
     const image = event.target.image.files[0];
+    setUpLoadButtonText("Uploading...");
 
     // upload image
     imageUpload(image)
@@ -38,7 +42,7 @@ const AddRoom = () => {
           from,
           to,
           price: parseFloat(price),
-          guests,
+          guest,
           bedrooms,
           bathrooms,
           description,
@@ -53,7 +57,13 @@ const AddRoom = () => {
 
         // post room data to server
         addRoom(roomData)
-          .then((data) => console.log(data))
+          .then((data) => {
+            console.log(data)
+            setUpLoadButtonText("Uploaded!")
+            setLoading(false);
+            toast.success("Room Added Successfully!");
+            navigate("/dashboard/my-listings");
+          })
           .catch((err) => console.log(err));
         console.log(roomData);
         setLoading(false);
