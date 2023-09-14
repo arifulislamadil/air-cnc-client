@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
-import { getBooking } from "../../api/bookings";
+import { getHostBookings } from "../../api/bookings";
 import TableRow from "../../components/Dashboard/TableRow";
 import EmptyState from "../../components/Shared/EmptyState";
 
-const MyBookings = () => {
+const ManageBookings = () => {
   const [bookings, setBookings] = useState([]);
   const { user } = useContext(AuthContext);
 
 
   const fetchBookings = () => {
-    getBooking(user?.email).then((data) => {
+    getHostBookings(user?.email).then((data) => {
       setBookings(data);
     });
   };
@@ -20,8 +20,9 @@ const MyBookings = () => {
   }, [user]);
 
   return (
-    <>
-     { bookings && Array.isArray(bookings) && bookings.length > 0 ?<div className="container mx-auto px-4 sm:px-8">
+   <>
+   
+     { bookings && Array.isArray(bookings) && bookings.length > 0 ?  <div className="container mx-auto px-4 sm:px-8">
       <div className="py-8">
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
           <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
@@ -73,10 +74,10 @@ const MyBookings = () => {
           </div>
         </div>
       </div>
-    </div> : <EmptyState message = {"You did not book any room yet"} address={"/"} label={'Browse Rooms'}/>}
-    
-    </>
+    </div> : <EmptyState message = {"No Booking Data Available !"} address={"/"} label={'Go Back'}/>}
+   
+   </>
   );
 };
 
-export default MyBookings;
+export default ManageBookings;

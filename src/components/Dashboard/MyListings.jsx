@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../../providers/AuthProvider"
 import { getRooms } from "../../api/rooms";
 import RoomDataRow from "./RoomDataRow";
+import EmptyState from "../Shared/EmptyState";
 
 const MyListings = () => {
 
@@ -15,7 +16,8 @@ const MyListings = () => {
   }
   ,[user])
     return (
-      <div className='container mx-auto px-4 sm:px-8'>
+      <>
+      { rooms && Array.isArray(rooms) && rooms.length > 0 ? <div className='container mx-auto px-4 sm:px-8'>
         <div className='py-8'>
           <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
             <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
@@ -81,7 +83,7 @@ const MyListings = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>: <EmptyState message = {"No Room Data available"} address={"/dashboard/add-room"} label={'Add Room'}/>}</>
     )
   }
   
