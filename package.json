@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
+    "@stripe/react-stripe-js": "^2.3.2",
+    "@stripe/stripe-js": "^2.1.11",
+    "@tanstack/react-query": "^5.8.4",
+    "axios": "^1.6.2",
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
     "firebase": "^9.22.0",

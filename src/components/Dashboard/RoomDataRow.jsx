@@ -2,9 +2,11 @@ import { format } from "date-fns";
 import { useState } from "react";
 import DeleteModal from "../Modal/DeleteModal";
 import { deleteRoom } from "../../api/rooms";
+import UpdateRoomModal from "../Modal/UpdateRoomModal";
 
-const RoomDataRow = ({ room, fetchRooms }) => {
+const RoomDataRow = ({ room, refetch }) => {
   let [isOpen, setIsOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen]= useState(false)
 
   function openModal() {
     setIsOpen(true);
@@ -18,7 +20,7 @@ const RoomDataRow = ({ room, fetchRooms }) => {
     console.log(id)
     deleteRoom(id).then((data) => {
       console.log(data);
-      fetchRooms();
+      refetch();
       toast.success("Room deleted successfully");
     }).catch((err) =>console.log(err));
     closeModal();
@@ -77,13 +79,15 @@ const RoomDataRow = ({ room, fetchRooms }) => {
         />
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <span className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+        <span onClick={()=>setIsEditModalOpen(true)} className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
           <span
             aria-hidden="true"
             className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
           ></span>
           <span className="relative">Update</span>
         </span>
+
+        <UpdateRoomModal room={room} id={room._id} isOpen={isEditModalOpen} setIsEditModalOpen={setIsEditModalOpen} refetch={refetch}/>
       </td>
     </tr>
   );
